@@ -41,7 +41,7 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 
 // Set security headers to prevent various security vulnerabilities.
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // XSS attack prevention
 // Let's say I login as publisher. While creating a bootcamp, add a script tag to the name (eg. My Bootcamp<script>alert(1)</script>). When this is rendered on the screen on the client side, unnecessary JS code might get executed.
@@ -73,7 +73,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(fileupload());
 
 // Set static folder
-express.static(path.join(__dirname, "public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
